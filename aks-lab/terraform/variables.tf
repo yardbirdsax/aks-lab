@@ -18,3 +18,10 @@ variable "vaultResourceGroupName" {
   description = "The name of the resource group where the key vault resides."
 }
 
+variable "vmSize" {
+  type = string
+  description = "The size of the worker node VMs."
+  default = "Standard_B2ms"
+}
+
+

@@ -37,7 +37,7 @@ resource "azuread_service_principal_password" "aksSpPassword" {
 
 resource "azurerm_resource_group" "clusterResourceGroup" {
   name = "${var.clusterResourceGroupName}"
-  location = "eastus2"
+  location = "${azurerm_resource_group.clusterResourceGroup.location}"
 }
 
 
@@ -50,7 +50,7 @@ resource "azurerm_kubernetes_cluster" "aksCluster" {
     agent_pool_profile {
         name = "default"
         count = 1
-        vm_size = "Standard_B2ms"
+        vm_size = "${var.vmSize}"
         os_type = "Linux"
     }
 

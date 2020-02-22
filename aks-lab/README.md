@@ -1,5 +1,7 @@
 # Creating an AKS Lab
 
+This set of steps will create a very basic AKS cluster with no RBAC enabled, basic networking, and no interconnection with existing resources. In other words, definitely not something to do in any kind of live environment, but fine for a first foray.
+
 ## Pre-Requisites
 
 1. You must create a storage account and container to store Terraform state information.
