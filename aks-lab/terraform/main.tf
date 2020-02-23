@@ -37,7 +37,7 @@ resource "azuread_service_principal_password" "aksSpPassword" {
 
 resource "azurerm_resource_group" "clusterResourceGroup" {
   name = "${var.clusterResourceGroupName}"
-  location = "${azurerm_resource_group.clusterResourceGroup.location}"
+  location = var.location
 }
 
 
@@ -58,5 +58,9 @@ resource "azurerm_kubernetes_cluster" "aksCluster" {
         client_id = "${azuread_application.aksApp.application_id}"
         client_secret = "${data.azurerm_key_vault_secret.aksSpSecret.value}"
     }
+
+    depends_on = [
+        azuread_service_principal_password.aksSpPassword
+    ]
 }
 

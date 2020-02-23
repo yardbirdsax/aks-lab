@@ -24,4 +24,10 @@ variable "vmSize" {
   default = "Standard_B2ms"
 }
 
+variable "location" {
+  type = string
+  description = "The Azure region where the resources will be deployed."
+  default = "eastus2"
+}
+
 
