@@ -4,6 +4,11 @@ This set of steps will create a very basic AKS cluster with no RBAC enabled, bas
 
 ## Pre-Requisites
 
+1. You must have the following tools installed:
+    * [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
+    * [Helm](https://github.com/helm/helm)
+    * [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+
 1. You must create a storage account and container to store Terraform state information.
 
     ```bash
