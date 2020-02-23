@@ -64,3 +64,8 @@ resource "azurerm_kubernetes_cluster" "aksCluster" {
     ]
 }
 
+resource local_file kubeconfig {
+    filename = "~/.kube/${azurerm_kubernetes_cluster.aksCluster.name}"
+    content = azurerm_kubernetes_cluster.aksCluster.kube_config_raw
+}
+
