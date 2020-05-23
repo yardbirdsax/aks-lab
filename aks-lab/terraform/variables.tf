@@ -24,6 +24,12 @@ variable "vmSize" {
   default = "Standard_B2ms"
 }
 
+variable nodeCount {
+  type = number
+  description = "The number of nodes to deploy."
+  default = 1
+}
+
 variable "location" {
   type = string
   description = "The Azure region where the resources will be deployed."

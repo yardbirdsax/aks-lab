@@ -11,52 +11,52 @@ provider "azuread" {
 }
 
 resource "azuread_application" "aksApp" {
-    name = "${var.clusterName}"
+    name = var.clusterName
 }
 
 resource "azuread_service_principal" "aksSp" {
-    application_id = "${azuread_application.aksApp.application_id}"
+    application_id = azuread_application.aksApp.application_id
 }
 
 data "azurerm_key_vault" "aksKeyVault" {
-    name = "${var.vaultName}"
-    resource_group_name = "${var.vaultResourceGroupName}"
+    name = var.vaultName
+    resource_group_name = var.vaultResourceGroupName
 }
 
 data "azurerm_key_vault_secret" "aksSpSecret" {
     name = "${var.clusterName}-sp"
-    key_vault_id = "${data.azurerm_key_vault.aksKeyVault.id}"
+    key_vault_id = data.azurerm_key_vault.aksKeyVault.id
 }
 
 resource "azuread_service_principal_password" "aksSpPassword" {
-    service_principal_id = "${azuread_service_principal.aksSp.id}"  
-    value = "${data.azurerm_key_vault_secret.aksSpSecret.value}"
+    service_principal_id = azuread_service_principal.aksSp.id
+    value = data.azurerm_key_vault_secret.aksSpSecret.value
     # 100 years
     end_date_relative = "876000h"
 }
 
 resource "azurerm_resource_group" "clusterResourceGroup" {
-  name = "${var.clusterResourceGroupName}"
+  name = var.clusterResourceGroupName
   location = var.location
 }
 
 
 resource "azurerm_kubernetes_cluster" "aksCluster" {
-    name = "${var.clusterName}"  
-    resource_group_name = "${azurerm_resource_group.clusterResourceGroup.name}"
-    location = "${azurerm_resource_group.clusterResourceGroup.location}"
-    dns_prefix = "${var.clusterName}"
+    name = var.clusterName 
+    resource_group_name = azurerm_resource_group.clusterResourceGroup.name
+    location = azurerm_resource_group.clusterResourceGroup.location
+    dns_prefix = var.clusterName
     
     agent_pool_profile {
         name = "default"
-        count = 1
-        vm_size = "${var.vmSize}"
+        count = var.nodeCount
+        vm_size = var.vmSize
         os_type = "Linux"
     }
 
     service_principal {
-        client_id = "${azuread_application.aksApp.application_id}"
-        client_secret = "${data.azurerm_key_vault_secret.aksSpSecret.value}"
+        client_id = azuread_application.aksApp.application_id
+        client_secret = data.azurerm_key_vault_secret.aksSpSecret.value
     }
 
     depends_on = [
